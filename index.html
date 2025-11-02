@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA Problem Tracker - 160 Problems</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 1.1em;
+        }
+
+        .reset-btn {
+            background: #e53e3e;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .reset-btn:hover {
+            background: #c53030;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229,62,62,0.3);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            padding: 25px;
+            border-radius: 15px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card.blue { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .stat-card.green { background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); }
+        .stat-card.purple { background: linear-gradient(135deg, #9f7aea 0%, #805ad5 100%); }
+        .stat-card.orange { background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%); }
+
+        .stat-info h3 {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .stat-info p {
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+
+        .stat-icon {
+            font-size: 3em;
+            opacity: 0.8;
+        }
+
+        .progress-section {
+            margin-bottom: 30px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 20px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        .category-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .category-card {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .category-name {
+            font-size: 0.85em;
+            color: #718096;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .category-count {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .mini-progress {
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .mini-progress-bar {
+            height: 100%;
+            background: #667eea;
+            transition: width 0.3s;
+        }
+
+        .difficulty-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .difficulty-card {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .difficulty-card h3 {
+            color: #718096;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .difficulty-card p {
+            font-size: 2em;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .filters {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .search-input, .filter-select {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus, .filter-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+        }
+
+        .problems-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: #2d3748;
+            margin-bottom: 20px;
+        }
+
+        .problem-count {
+            color: #718096;
+            font-weight: normal;
+            font-size: 0.7em;
+        }
+
+        .problem-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .problem-item:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102,126,234,0.2);
+            transform: translateX(5px);
+        }
+
+        .problem-item.completed {
+            background: #f0fff4;
+            border-color: #48bb78;
+        }
+
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #cbd5e0;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.3s;
+        }
+
+        .checkbox.checked {
+            background: #48bb78;
+            border-color: #48bb78;
+        }
+
+        .checkbox.checked::after {
+            content: '✓';
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .problem-link {
+            flex: 1;
+            color: #3182ce;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .problem-link:hover {
+            color: #2c5282;
+            text-decoration: underline;
+        }
+
+        .badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .badge.easy {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .badge.medium {
+            background: #feebc8;
+            color: #7c2d12;
+        }
+
+        .badge.hard {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .category-badge {
+            background: #edf2f7;
+            color: #4a5568;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 500;
+            display: none;
+        }
+
+        .resources {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .resources h3 {
+            font-size: 1.5em;
+            color: #2d3748;
+            margin-bottom: 20px;
+        }
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .resource-card {
+            padding: 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: 2px solid;
+        }
+
+        .resource-card.blue {
+            background: #ebf8ff;
+            border-color: #bee3f8;
+        }
+
+        .resource-card.green {
+            background: #f0fff4;
+            border-color: #c6f6d5;
+        }
+
+        .resource-card.purple {
+            background: #faf5ff;
+            border-color: #e9d8fd;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .resource-card h4 {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .resource-card.blue h4 { color: #2c5282; }
+        .resource-card.green h4 { color: #22543d; }
+        .resource-card.purple h4 { color: #553c9a; }
+
+        .resource-card p {
+            font-size: 0.9em;
+        }
+
+        .resource-card.blue p { color: #2b6cb0; }
+        .resource-card.green p { color: #276749; }
+        .resource-card.purple p { color: #6b46c1; }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #718096;
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8em; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .difficulty-stats { grid-template-columns: 1fr; }
+            .category-badge { display: none !important; }
+            .filters { flex-direction: column; }
+            .search-input, .filter-select { width: 100%; }
+        }
+
+        @media (min-width: 1024px) {
+            .category-badge { display: block; }
+        }
+
+        @media print {
+            body { background: white; }
+            .reset-btn, .filters { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <div class="header-top">
+                <div>
+                    <h1>DSA Problem Tracker</h1>
+                    <p class="subtitle">160 curated problems to master Data Structures & Algorithms</p>
+                </div>
+                <button class="reset-btn" onclick="resetProgress()">Reset Progress</button>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card blue">
+                    <div class="stat-info">
+                        <h3>Total Problems</h3>
+                        <p id="totalProblems">160</p>
+                    </div>
+                    <div class="stat-icon">🎯</div>
+                </div>
+                <div class="stat-card green">
+                    <div class="stat-info">
+                        <h3>Completed</h3>
+                        <p id="completedCount">0</p>
+                    </div>
+                    <div class="stat-icon">🏆</div>
+                </div>
+                <div class="stat-card purple">
+                    <div class="stat-info">
+                        <h3>Progress</h3>
+                        <p id="progressPercent">0%</p>
+                    </div>
+                    <div class="stat-icon">📈</div>
+                </div>
+                <div class="stat-card orange">
+                    <div class="stat-info">
+                        <h3>Days Left (2/day)</h3>
+                        <p id="daysLeft">80</p>
+                    </div>
+                    <div class="stat-icon">📅</div>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-section">
+                <div class="progress-header">
+                    <span>Overall Progress</span>
+                    <span id="progressText">0/160</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Category Stats -->
+            <div class="category-stats" id="categoryStats"></div>
+
+            <!-- Difficulty Stats -->
+            <div class="difficulty-stats">
+                <div class="difficulty-card">
+                    <h3>Easy</h3>
+                    <p id="easyCount">0/47</p>
+                    <div class="mini-progress">
+                        <div class="mini-progress-bar" id="easyProgress" style="width: 0%; background: #48bb78;"></div>
+                    </div>
+                </div>
+                <div class="difficulty-card">
+                    <h3>Medium</h3>
+                    <p id="mediumCount">0/95</p>
+                    <div class="mini-progress">
+                        <div class="mini-progress-bar" id="mediumProgress" style="width: 0%; background: #ed8936;"></div>
+                    </div>
+                </div>
+                <div class="difficulty-card">
+                    <h3>Hard</h3>
+                    <p id="hardCount">0/18</p>
+                    <div class="mini-progress">
+                        <div class="mini-progress-bar" id="hardProgress" style="width: 0%; background: #e53e3e;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters">
+            <input type="text" class="search-input" id="searchInput" placeholder="🔍 Search problems...">
+            <select class="filter-select" id="categoryFilter">
+                <option value="All">All Categories</option>
+            </select>
+        </div>
+
+        <!-- Problems Section -->
+        <div class="problems-section">
+            <h2 class="section-title">
+                <span id="sectionTitle">All Problems</span>
+                <span class="problem-count" id="problemCount">(160 problems)</span>
+            </h2>
+            <div id="problemsList"></div>
+        </div>
+
+        <!-- Resources -->
+        <div class="resources">
+            <h3>📚 Additional Resources</h3>
+            <div class="resource-grid">
+                <a href="https://neetcode.io" target="_blank" class="resource-card blue">
+                    <h4>NeetCode</h4>
+                    <p>Video explanations for all problems</p>
+                </a>
+                <a href="https://takeuforward.org/interviews/strivers-sde-sheet-top-coding-interview-problems" target="_blank" class="resource-card green">
+                    <h4>Striver's SDE Sheet</h4>
+                    <p>Comprehensive interview guide</p>
+                </a>
+                <a href="https://leetcode.com/discuss/general-discussion/460599/blind-75-leetcode-questions" target="_blank" class="resource-card purple">
+                    <h4>Blind 75</h4>
+                    <p>Core interview questions</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const problems = [
+            // Arrays & Strings - 20 problems
+            { id: 1, name: "Two Sum", difficulty: "Easy", category: "Arrays & Strings", link: "https://leetcode.com/problems/two-sum/" },
+            { id: 2, name: "Best Time to Buy and Sell Stock", difficulty: "Easy", category: "Arrays & Strings", link: "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/" },
+            { id: 3, name: "Contains Duplicate", difficulty: "Easy", category: "Arrays & Strings", link: "https://leetcode.com/problems/contains-duplicate/" },
+            { id: 4, name: "Product of Array Except Self", difficulty: "Medium", category: "Arrays & Strings", link: "https://leetcode.com/problems/product-of-array-except-self/" },
+            { id: 5, name: "Maximum Subarray", difficulty: "Medium", category: "Arrays & Strings", link: "https://leetcode.com/problems/maximum-subarray/" },
+            { id: 6, name: "Maximum Product Subarray", difficulty: "Medium", category: "Arrays & Strings", link: "https://leetcode.com/problems/maximum-product-subarray/" },
+            { id: 7, name: "Find Minimum in Rotated Sorted Array", difficulty: "Medium", category: "Arrays & Strings", link: "https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/" },
+            { id: 8, name: "Search in Rotated Sorted Array", difficulty: "Medium", category: "Arrays & Strings", link: "https://leetcode.com/problems/search-in-rotated-sorted-array/" },
+            { id: 9, name: "3Sum", difficulty: "Medium", category: "Arrays & Strings", link: "https://leetcode.com/problems/3sum/" },
+            { id: 10, name: "Container With Most Water", difficulty: "Medium", category: "Arrays & Strings", link: "https://leetcode.com/problems/container-with-most-water/" },
+            { id: 11, name: "Longest Substring Without Repeating Characters", difficulty: "Medium", category: "Arrays & Strings", link: "https://leetcode.com/problems/longest-substring-without-repeating-characters/" },
+            { id: 12, name: "Longest Repeating Character Replacement", difficulty: "Medium", category: "Arrays & Strings", link: "https://leetcode.com/problems/longest-repeating-character-replacement/" },
+            { id: 13, name: "Minimum Window Substring", difficulty: "Hard", category: "Arrays & Strings", link: "https://leetcode.com/problems/minimum-window-substring/" },
+            { id: 14, name: "Valid Anagram", difficulty: "Easy", category: "Arrays & Strings", link: "https://leetcode.com/problems/valid-anagram/" },
+            { id: 15, name: "Group Anagrams", difficulty: "Medium", category: "Arrays & Strings", link: "https://leetcode.com/problems/group-anagrams/" },
+            { id: 16, name: "Valid Parentheses", difficulty: "Easy", category: "Arrays & Strings", link: "https://leetcode.com/problems/valid-parentheses/" },
+            { id: 17, name: "Valid Palindrome", difficulty: "Easy", category: "Arrays & Strings", link: "https://leetcode.com/problems/valid-palindrome/" },
+            { id: 18, name: "Longest Palindromic Substring", difficulty: "Medium", category: "Arrays & Strings", link: "https://leetcode.com/problems/longest-palindromic-substring/" },
+            { id: 19, name: "Palindromic Substrings", difficulty: "Medium", category: "Arrays & Strings", link: "https://leetcode.com/problems/palindromic-substrings/" },
+            { id: 20, name: "Trapping Rain Water", difficulty: "Hard", category: "Arrays & Strings", link: "https://leetcode.com/problems/trapping-rain-water/" },
+
+            // Linked Lists - 12 problems
+            { id: 21, name: "Reverse Linked List", difficulty: "Easy", category: "Linked Lists", link: "https://leetcode.com/problems/reverse-linked-list/" },
+            { id: 22, name: "Merge Two Sorted Lists", difficulty: "Easy", category: "Linked Lists", link: "https://leetcode.com/problems/merge-two-sorted-lists/" },
+            { id: 23, name: "Linked List Cycle", difficulty: "Easy", category: "Linked Lists", link: "https://leetcode.com/problems/linked-list-cycle/" },
+            { id: 24, name: "Remove Nth Node From End", difficulty: "Medium", category: "Linked Lists", link: "https://leetcode.com/problems/remove-nth-node-from-end-of-list/" },
+            { id: 25, name: "Reorder List", difficulty: "Medium", category: "Linked Lists", link: "https://leetcode.com/problems/reorder-list/" },
+            { id: 26, name: "Add Two Numbers", difficulty: "Medium", category: "Linked Lists", link: "https://leetcode.com/problems/add-two-numbers/" },
+            { id: 27, name: "Copy List with Random Pointer", difficulty: "Medium", category: "Linked Lists", link: "https://leetcode.com/problems/copy-list-with-random-pointer/" },
+            { id: 28, name: "Intersection of Two Linked Lists", difficulty: "Easy", category: "Linked Lists", link: "https://leetcode.com/problems/intersection-of-two-linked-lists/" },
+            { id: 29, name: "Middle of the Linked List", difficulty: "Easy", category: "Linked Lists", link: "https://leetcode.com/problems/middle-of-the-linked-list/" },
+            { id: 30, name: "Palindrome Linked List", difficulty: "Easy", category: "Linked Lists", link: "https://leetcode.com/problems/palindrome-linked-list/" },
+            { id: 31, name: "Merge K Sorted Lists", difficulty: "Hard", category: "Linked Lists", link: "https://leetcode.com/problems/merge-k-sorted-lists/" },
+            { id: 32, name: "Reverse Nodes in K-Group", difficulty: "Hard", category: "Linked Lists", link: "https://leetcode.com/problems/reverse-nodes-in-k-group/" },
+
+            // Trees & Graphs - 30 problems
+            { id: 33, name: "Maximum Depth of Binary Tree", difficulty: "Easy", category: "Trees & Graphs", link: "https://leetcode.com/problems/maximum-depth-of-binary-tree/" },
+            { id: 34, name: "Same Tree", difficulty: "Easy", category: "Trees & Graphs", link: "https://leetcode.com/problems/same-tree/" },
+            { id: 35, name: "Invert Binary Tree", difficulty: "Easy", category: "Trees & Graphs", link: "https://leetcode.com/problems/invert-binary-tree/" },
+            { id: 36, name: "Binary Tree Level Order Traversal", difficulty: "Medium", category: "Trees & Graphs", link: "https://leetcode.com/problems/binary-tree-level-order-traversal/" },
+            { id: 37, name: "Validate Binary Search Tree", difficulty: "Medium", category: "Trees & Graphs", link: "https://leetcode.com/problems/validate-binary-search-tree/" },
+            { id: 38, name: "Kth Smallest Element in BST", difficulty: "Medium", category: "Trees & Graphs", link: "https://leetcode.com/problems/kth-smallest-element-in-a-bst/" },
+            { id: 39, name: "Lowest Common Ancestor of BST", difficulty: "Medium", category: "Trees & Graphs", link: "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/" },
+            { id: 40, name: "Implement Trie", difficulty: "Medium", category: "Trees & Graphs", link: "https://leetcode.com/problems/implement-trie-prefix-tree/" },
+            { id: 41, name: "Design Add and Search Words", difficulty: "Medium", category: "Trees & Graphs", link: "https://leetcode.com/problems/design-add-and-search-words-data-structure/" },
+            { id: 42, name: "Word Search II", difficulty: "Hard", category: "Trees & Graphs", link: "https://leetcode.com/problems/word-search-ii/" },
+            { id: 43, name: "Subtree of Another Tree", difficulty: "Easy", category: "Trees & Graphs", link: "https://leetcode.com/problems/subtree-of-another-tree/" },
+            { id: 44, name: "Construct Binary Tree from Preorder and Inorder", difficulty: "Medium", category: "Trees & Graphs", link: "https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/" },
+            { id: 45, name: "Binary Tree Right Side View", difficulty: "Medium", category: "Trees & Graphs", link: "https://leetcode.com/problems/binary-tree-right-side-view/" },
+            { id: 46, name: "Count Good Nodes in Binary Tree", difficulty: "Medium", category: "Trees & Graphs", link: "https://leetcode.com/problems/count-good-nodes-in-binary-tree/" },
+            { id: 47, name: "Diameter of Binary Tree", difficulty: "Easy", category: "Trees & Graphs", link: "https://leetcode.com/problems/diameter-of-binary-tree/" },
+            { id: 48, name: "Balanced Binary Tree", difficulty: "Easy", category: "Trees & Graphs", link: "https://leetcode.com/problems/balanced-binary-tree/" },
+            { id: 49, name: "Number of Islands", difficulty: "Medium", category: "Trees & Graphs", link: "https://leetcode.com/problems/number-of-islands/" },
+            { id: 50, name: "Clone Graph", difficulty: "Medium", category: "Trees & Graphs", link: "https://leetcode.com/problems/clone-graph/" },
+            { id: 51, name: "Pacific Atlantic Water Flow", difficulty: "Medium", category: "Trees & Graphs", link: "https://leetcode.com/problems/pacific-atlantic-water-flow/" },
+            { id: 52, name: "Course Schedule", difficulty: "Medium", category: "Trees & Graphs", link: "https://leetcode.com/problems/course-schedule/" },
+            { id: 53, name: "Course Schedule II", difficulty: "Medium", category: "Trees & Graphs", link: "https://leetcode.com/problems/course-schedule-ii/" },
+            { id: 54, name: "Graph Valid Tree", difficulty: "Medium", category: "Trees & Graphs", link: "https://leetcode.com/problems/graph-valid-tree/" },
+            { id: 55, name: "Number of Connected Components", difficulty: "Medium", category: "Trees & Graphs", link: "https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/" },
+            { id: 56, name: "Rotting Oranges", difficulty: "Medium", category: "Trees & Graphs", link: "https://leetcode.com/problems/rotting-oranges/" },
+            { id: 57, name: "Walls and Gates", difficulty: "Medium", category: "Trees & Graphs", link: "https://leetcode.com/problems/walls-and-gates/" },
+            { id: 58, name: "Surrounded Regions", difficulty: "Medium", category: "Trees & Graphs", link: "https://leetcode.com/problems/surrounded-regions/" },
+            { id: 59, name: "Binary Tree Maximum Path Sum", difficulty: "Hard", category: "Trees & Graphs", link: "https://leetcode.com/problems/binary-tree-maximum-path-sum/" },
+            { id: 60, name: "Serialize and Deserialize Binary Tree", difficulty: "Hard", category: "Trees & Graphs", link: "https://leetcode.com/problems/serialize-and-deserialize-binary-tree/" },
+            { id: 61, name: "Word Ladder", difficulty: "Hard", category: "Trees & Graphs", link: "https://leetcode.com/problems/word-ladder/" },
+            { id: 62, name: "Alien Dictionary", difficulty: "Hard", category: "Trees & Graphs", link: "https://leetcode.com/problems/alien-dictionary/" },
+
+            // Dynamic Programming - 25 problems
+            { id: 63, name: "Climbing Stairs", difficulty: "Easy", category: "Dynamic Programming", link: "https://leetcode.com/problems/climbing-stairs/" },
+            { id: 64, name: "Min Cost Climbing Stairs", difficulty: "Easy", category: "Dynamic Programming", link: "https://leetcode.com/problems/min-cost-climbing-stairs/" },
+            { id: 65, name: "House Robber", difficulty: "Medium", category: "Dynamic Programming", link: "https://leetcode.com/problems/house-robber/" },
+            { id: 66, name: "House Robber II", difficulty: "Medium", category: "Dynamic Programming", link: "https://leetcode.com/problems/house-robber-ii/" },
+            { id: 67, name: "Longest Palindromic Subsequence", difficulty: "Medium", category: "Dynamic Programming", link: "https://leetcode.com/problems/longest-palindromic-subsequence/" },
+            { id: 68, name: "Palindrome Partitioning II", difficulty: "Hard", category: "Dynamic Programming", link: "https://leetcode.com/problems/palindrome-partitioning-ii/" },
+            { id: 69, name: "Decode Ways", difficulty: "Medium", category: "Dynamic Programming", link: "https://leetcode.com/problems/decode-ways/" },
+            { id: 70, name: "Coin Change", difficulty: "Medium", category: "Dynamic Programming", link: "https://leetcode.com/problems/coin-change/" },
+            { id: 71, name: "Coin Change II", difficulty: "Medium", category: "Dynamic Programming", link: "https://leetcode.com/problems/coin-change-ii/" },
+            { id: 72, name: "Target Sum", difficulty: "Medium", category: "Dynamic Programming", link: "https://leetcode.com/problems/target-sum/" },
+            { id: 73, name: "Partition Equal Subset Sum", difficulty: "Medium", category: "Dynamic Programming", link: "https://leetcode.com/problems/partition-equal-subset-sum/" },
+            { id: 74, name: "Longest Increasing Subsequence", difficulty: "Medium", category: "Dynamic Programming", link: "https://leetcode.com/problems/longest-increasing-subsequence/" },
+            { id: 75, name: "Longest Common Subsequence", difficulty: "Medium", category: "Dynamic Programming", link: "https://leetcode.com/problems/longest-common-subsequence/" },
+            { id: 76, name: "Word Break", difficulty: "Medium", category: "Dynamic Programming", link: "https://leetcode.com/problems/word-break/" },
+            { id: 77, name: "Word Break II", difficulty: "Hard", category: "Dynamic Programming", link: "https://leetcode.com/problems/word-break-ii/" },
+            { id: 78, name: "Unique Paths", difficulty: "Medium", category: "Dynamic Programming", link: "https://leetcode.com/problems/unique-paths/" },
+            { id: 79, name: "Unique Paths II", difficulty: "Medium", category: "Dynamic Programming", link: "https://leetcode.com/problems/unique-paths-ii/" },
+            { id: 80, name: "Jump Game", difficulty: "Medium", category: "Dynamic Programming", link: "https://leetcode.com/problems/jump-game/" },
+            { id: 81, name: "Jump Game II", difficulty: "Medium", category: "Dynamic Programming", link: "https://leetcode.com/problems/jump-game-ii/" },
+            { id: 82, name: "Best Time to Buy and Sell Stock IV", difficulty: "Hard", category: "Dynamic Programming", link: "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/" },
+            { id: 83, name: "Interleaving String", difficulty: "Medium", category: "Dynamic Programming", link: "https://leetcode.com/problems/interleaving-string/" },
+            { id: 84, name: "Distinct Subsequences", difficulty: "Hard", category: "Dynamic Programming", link: "https://leetcode.com/problems/distinct-subsequences/" },
+            { id: 85, name: "Edit Distance", difficulty: "Hard", category: "Dynamic Programming", link: "https://leetcode.com/problems/edit-distance/" },
+            { id: 86, name: "Regular Expression Matching", difficulty: "Hard", category: "Dynamic Programming", link: "https://leetcode.com/problems/regular-expression-matching/" },
+            { id: 87, name: "Burst Balloons", difficulty: "Hard", category: "Dynamic Programming", link: "https://leetcode.com/problems/burst-balloons/" },
+
+            // Backtracking - 15 problems
+            { id: 88, name: "Subsets", difficulty: "Medium", category: "Backtracking", link: "https://leetcode.com/problems/subsets/" },
+            { id: 89, name: "Subsets II", difficulty: "Medium", category: "Backtracking", link: "https://leetcode.com/problems/subsets-ii/" },
+            { id: 90, name: "Permutations", difficulty: "Medium", category: "Backtracking", link: "https://leetcode.com/problems/permutations/" },
+            { id: 91, name: "Permutations II", difficulty: "Medium", category: "Backtracking", link: "https://leetcode.com/problems/permutations-ii/" },
+            { id: 92, name: "Combination Sum", difficulty: "Medium", category: "Backtracking", link: "https://leetcode.com/problems/combination-sum/" },
+            { id: 93, name: "Combination Sum II", difficulty: "Medium", category: "Backtracking", link: "https://leetcode.com/problems/combination-sum-ii/" },
+            { id: 94, name: "Combination Sum III", difficulty: "Medium", category: "Backtracking", link: "https://leetcode.com/problems/combination-sum-iii/" },
+            { id: 95, name: "Generate Parentheses", difficulty: "Medium", category: "Backtracking", link: "https://leetcode.com/problems/generate-parentheses/" },
+            { id: 96, name: "Letter Combinations of Phone Number", difficulty: "Medium", category: "Backtracking", link: "https://leetcode.com/problems/letter-combinations-of-a-phone-number/" },
+            { id: 97, name: "Palindrome Partitioning", difficulty: "Medium", category: "Backtracking", link: "https://leetcode.com/problems/palindrome-partitioning/" },
+            { id: 98, name: "Word Search", difficulty: "Medium", category: "Backtracking", link: "https://leetcode.com/problems/word-search/" },
+            { id: 99, name: "Restore IP Addresses", difficulty: "Medium", category: "Backtracking", link: "https://leetcode.com/problems/restore-ip-addresses/" },
+            { id: 100, name: "N-Queens", difficulty: "Hard", category: "Backtracking", link: "https://leetcode.com/problems/n-queens/" },
+            { id: 101, name: "N-Queens II", difficulty: "Hard", category: "Backtracking", link: "https://leetcode.com/problems/n-queens-ii/" },
+            { id: 102, name: "Sudoku Solver", difficulty: "Hard", category: "Backtracking", link: "https://leetcode.com/problems/sudoku-solver/" },
+
+            // Heaps & Priority Queues - 10 problems
+            { id: 103, name: "Kth Largest Element in Array", difficulty: "Medium", category: "Heaps", link: "https://leetcode.com/problems/kth-largest-element-in-an-array/" },
+            { id: 104, name: "Top K Frequent Elements", difficulty: "Medium", category: "Heaps", link: "https://leetcode.com/problems/top-k-frequent-elements/" },
+            { id: 105, name: "K Closest Points to Origin", difficulty: "Medium", category: "Heaps", link: "https://leetcode.com/problems/k-closest-points-to-origin/" },
+            { id: 106, name: "Task Scheduler", difficulty: "Medium", category: "Heaps", link: "https://leetcode.com/problems/task-scheduler/" },
+            { id: 107, name: "Design Twitter", difficulty: "Medium", category: "Heaps", link: "https://leetcode.com/problems/design-twitter/" },
+            { id: 108, name: "Kth Largest Element in Stream", difficulty: "Easy", category: "Heaps", link: "https://leetcode.com/problems/kth-largest-element-in-a-stream/" },
+            { id: 109, name: "Last Stone Weight", difficulty: "Easy", category: "Heaps", link: "https://leetcode.com/problems/last-stone-weight/" },
+            { id: 110, name: "Find Median from Data Stream", difficulty: "Hard", category: "Heaps", link: "https://leetcode.com/problems/find-median-from-data-stream/" },
+            { id: 111, name: "IPO", difficulty: "Hard", category: "Heaps", link: "https://leetcode.com/problems/ipo/" },
+            { id: 112, name: "Find K Pairs with Smallest Sums", difficulty: "Medium", category: "Heaps", link: "https://leetcode.com/problems/find-k-pairs-with-smallest-sums/" },
+
+            // Binary Search - 12 problems
+            { id: 113, name: "Binary Search", difficulty: "Easy", category: "Binary Search", link: "https://leetcode.com/problems/binary-search/" },
+            { id: 114, name: "Search a 2D Matrix", difficulty: "Medium", category: "Binary Search", link: "https://leetcode.com/problems/search-a-2d-matrix/" },
+            { id: 115, name: "Koko Eating Bananas", difficulty: "Medium", category: "Binary Search", link: "https://leetcode.com/problems/koko-eating-bananas/" },
+            { id: 116, name: "Find First and Last Position", difficulty: "Medium", category: "Binary Search", link: "https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/" },
+            { id: 117, name: "Search in Rotated Sorted Array", difficulty: "Medium", category: "Binary Search", link: "https://leetcode.com/problems/search-in-rotated-sorted-array/" },
+            { id: 118, name: "Time Based Key-Value Store", difficulty: "Medium", category: "Binary Search", link: "https://leetcode.com/problems/time-based-key-value-store/" },
+            { id: 119, name: "Median of Two Sorted Arrays", difficulty: "Hard", category: "Binary Search", link: "https://leetcode.com/problems/median-of-two-sorted-arrays/" },
+            { id: 120, name: "Sqrt(x)", difficulty: "Easy", category: "Binary Search", link: "https://leetcode.com/problems/sqrtx/" },
+            { id: 121, name: "Find Peak Element", difficulty: "Medium", category: "Binary Search", link: "https://leetcode.com/problems/find-peak-element/" },
+            { id: 122, name: "Search Insert Position", difficulty: "Easy", category: "Binary Search", link: "https://leetcode.com/problems/search-insert-position/" },
+            { id: 123, name: "Capacity To Ship Packages", difficulty: "Medium", category: "Binary Search", link: "https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/" },
+            { id: 124, name: "Split Array Largest Sum", difficulty: "Hard", category: "Binary Search", link: "https://leetcode.com/problems/split-array-largest-sum/" },
+
+            // Bit Manipulation - 10 problems
+            { id: 125, name: "Single Number", difficulty: "Easy", category: "Bit Manipulation", link: "https://leetcode.com/problems/single-number/" },
+            { id: 126, name: "Number of 1 Bits", difficulty: "Easy", category: "Bit Manipulation", link: "https://leetcode.com/problems/number-of-1-bits/" },
+            { id: 127, name: "Counting Bits", difficulty: "Easy", category: "Bit Manipulation", link: "https://leetcode.com/problems/counting-bits/" },
+            { id: 128, name: "Missing Number", difficulty: "Easy", category: "Bit Manipulation", link: "https://leetcode.com/problems/missing-number/" },
+            { id: 129, name: "Reverse Bits", difficulty: "Easy", category: "Bit Manipulation", link: "https://leetcode.com/problems/reverse-bits/" },
+            { id: 130, name: "Sum of Two Integers", difficulty: "Medium", category: "Bit Manipulation", link: "https://leetcode.com/problems/sum-of-two-integers/" },
+            { id: 131, name: "Single Number II", difficulty: "Medium", category: "Bit Manipulation", link: "https://leetcode.com/problems/single-number-ii/" },
+            { id: 132, name: "Single Number III", difficulty: "Medium", category: "Bit Manipulation", link: "https://leetcode.com/problems/single-number-iii/" },
+            { id: 133, name: "Bitwise AND of Numbers Range", difficulty: "Medium", category: "Bit Manipulation", link: "https://leetcode.com/problems/bitwise-and-of-numbers-range/" },
+            { id: 134, name: "Maximum XOR of Two Numbers", difficulty: "Medium", category: "Bit Manipulation", link: "https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/" },
+
+            // Math & Geometry - 10 problems
+            { id: 135, name: "Rotate Image", difficulty: "Medium", category: "Math & Geometry", link: "https://leetcode.com/problems/rotate-image/" },
+            { id: 136, name: "Spiral Matrix", difficulty: "Medium", category: "Math & Geometry", link: "https://leetcode.com/problems/spiral-matrix/" },
+            { id: 137, name: "Set Matrix Zeroes", difficulty: "Medium", category: "Math & Geometry", link: "https://leetcode.com/problems/set-matrix-zeroes/" },
+            { id: 138, name: "Happy Number", difficulty: "Easy", category: "Math & Geometry", link: "https://leetcode.com/problems/happy-number/" },
+            { id: 139, name: "Plus One", difficulty: "Easy", category: "Math & Geometry", link: "https://leetcode.com/problems/plus-one/" },
+            { id: 140, name: "Pow(x, n)", difficulty: "Medium", category: "Math & Geometry", link: "https://leetcode.com/problems/powx-n/" },
+            { id: 141, name: "Multiply Strings", difficulty: "Medium", category: "Math & Geometry", link: "https://leetcode.com/problems/multiply-strings/" },
+            { id: 142, name: "Detect Squares", difficulty: "Medium", category: "Math & Geometry", link: "https://leetcode.com/problems/detect-squares/" },
+            { id: 143, name: "Rectangle Overlap", difficulty: "Easy", category: "Math & Geometry", link: "https://leetcode.com/problems/rectangle-overlap/" },
+            { id: 144, name: "Valid Sudoku", difficulty: "Medium", category: "Math & Geometry", link: "https://leetcode.com/problems/valid-sudoku/" },
+
+            // Intervals - 8 problems
+            { id: 145, name: "Insert Interval", difficulty: "Medium", category: "Intervals", link: "https://leetcode.com/problems/insert-interval/" },
+            { id: 146, name: "Merge Intervals", difficulty: "Medium", category: "Intervals", link: "https://leetcode.com/problems/merge-intervals/" },
+            { id: 147, name: "Non-overlapping Intervals", difficulty: "Medium", category: "Intervals", link: "https://leetcode.com/problems/non-overlapping-intervals/" },
+            { id: 148, name: "Meeting Rooms", difficulty: "Easy", category: "Intervals", link: "https://leetcode.com/problems/meeting-rooms/" },
+            { id: 149, name: "Meeting Rooms II", difficulty: "Medium", category: "Intervals", link: "https://leetcode.com/problems/meeting-rooms-ii/" },
+            { id: 150, name: "Minimum Interval to Include Query", difficulty: "Hard", category: "Intervals", link: "https://leetcode.com/problems/minimum-interval-to-include-each-query/" },
+            { id: 151, name: "Employee Free Time", difficulty: "Hard", category: "Intervals", link: "https://leetcode.com/problems/employee-free-time/" },
+            { id: 152, name: "Interval List Intersections", difficulty: "Medium", category: "Intervals", link: "https://leetcode.com/problems/interval-list-intersections/" },
+
+            // Greedy - 8 problems
+            { id: 153, name: "Maximum Subarray", difficulty: "Medium", category: "Greedy", link: "https://leetcode.com/problems/maximum-subarray/" },
+            { id: 154, name: "Jump Game", difficulty: "Medium", category: "Greedy", link: "https://leetcode.com/problems/jump-game/" },
+            { id: 155, name: "Gas Station", difficulty: "Medium", category: "Greedy", link: "https://leetcode.com/problems/gas-station/" },
+            { id: 156, name: "Hand of Straights", difficulty: "Medium", category: "Greedy", link: "https://leetcode.com/problems/hand-of-straights/" },
+            { id: 157, name: "Merge Triplets", difficulty: "Medium", category: "Greedy", link: "https://leetcode.com/problems/merge-triplets-to-form-target-triplet/" },
+            { id: 158, name: "Partition Labels", difficulty: "Medium", category: "Greedy", link: "https://leetcode.com/problems/partition-labels/" },
+            { id: 159, name: "Valid Parenthesis String", difficulty: "Medium", category: "Greedy", link: "https://leetcode.com/problems/valid-parenthesis-string/" },
+            { id: 160, name: "Candy", difficulty: "Hard", category: "Greedy", link: "https://leetcode.com/problems/candy/" },
+        ];
+
+        let completed = {};
+
+        // Load progress from storage
+        function loadProgress() {
+            const saved = localStorage.getItem('dsa-progress');
+            if (saved) {
+                completed = JSON.parse(saved);
+            }
+            updateUI();
+        }
+
+        // Save progress to storage
+        function saveProgress() {
+            localStorage.setItem('dsa-progress', JSON.stringify(completed));
+        }
+
+        // Toggle problem completion
+        function toggleComplete(id) {
+            completed[id] = !completed[id];
+            saveProgress();
+            updateUI();
+        }
+
+        // Reset all progress
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+                completed = {};
+                localStorage.removeItem('dsa-progress');
+                updateUI();
+            }
+        }
+
+        // Update all UI elements
+        function updateUI() {
+            const completedCount = Object.values(completed).filter(Boolean).length;
+            const totalProblems = problems.length;
+            const progressPercent = Math.round((completedCount / totalProblems) * 100);
+            const daysLeft = Math.ceil((totalProblems - completedCount) / 2);
+
+            document.getElementById('completedCount').textContent = completedCount;
+            document.getElementById('progressPercent').textContent = progressPercent + '%';
+            document.getElementById('progressText').textContent = `${completedCount}/${totalProblems}`;
+            document.getElementById('daysLeft').textContent = daysLeft;
+            document.getElementById('progressBar').style.width = progressPercent + '%';
+
+            updateCategoryStats();
+            updateDifficultyStats();
+            renderProblems();
+        }
+
+        // Update category statistics
+        function updateCategoryStats() {
+            const categories = [...new Set(problems.map(p => p.category))];
+            const statsHTML = categories.map(cat => {
+                const catProblems = problems.filter(p => p.category === cat);
+                const catCompleted = catProblems.filter(p => completed[p.id]).length;
+                const percent = Math.round((catCompleted / catProblems.length) * 100);
+                
+                return `
+                    <div class="category-card">
+                        <div class="category-name">${cat}</div>
+                        <div class="category-count">${catCompleted}/${catProblems.length}</div>
+                        <div class="mini-progress">
+                            <div class="mini-progress-bar" style="width: ${percent}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            document.getElementById('categoryStats').innerHTML = statsHTML;
+        }
+
+        // Update difficulty statistics
+        function updateDifficultyStats() {
+            const difficulties = ['Easy', 'Medium', 'Hard'];
+            
+            difficulties.forEach(diff => {
+                const diffProblems = problems.filter(p => p.difficulty === diff);
+                const diffCompleted = diffProblems.filter(p => completed[p.id]).length;
+                const percent = Math.round((diffCompleted / diffProblems.length) * 100);
+                
+                const countId = diff.toLowerCase() + 'Count';
+                const progressId = diff.toLowerCase() + 'Progress';
+                
+                document.getElementById(countId).textContent = `${diffCompleted}/${diffProblems.length}`;
+                document.getElementById(progressId).style.width = percent + '%';
+            });
+        }
+
+        // Render problems list
+        function renderProblems() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const category = document.getElementById('categoryFilter').value;
+            
+            const filtered = problems.filter(p => {
+                const matchesSearch = p.name.toLowerCase().includes(searchTerm);
+                const matchesCategory = category === 'All' || p.category === category;
+                return matchesSearch && matchesCategory;
+            });
+
+            document.getElementById('sectionTitle').textContent = category === 'All' ? 'All Problems' : category;
+            document.getElementById('problemCount').textContent = `(${filtered.length} problems)`;
+
+            if (filtered.length === 0) {
+                document.getElementById('problemsList').innerHTML = '<div class="no-results">No problems found matching your criteria</div>';
+                return;
+            }
+
+            const problemsHTML = filtered.map(p => {
+                const isCompleted = completed[p.id];
+                return `
+                    <div class="problem-item ${isCompleted ? 'completed' : ''}">
+                        <div class="checkbox ${isCompleted ? 'checked' : ''}" onclick="toggleComplete(${p.id})"></div>
+                        <a href="${p.link}" target="_blank" class="problem-link">${p.id}. ${p.name}</a>
+                        <span class="badge ${p.difficulty.toLowerCase()}">${p.difficulty}</span>
+                        <span class="category-badge">${p.category}</span>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('problemsList').innerHTML = problemsHTML;
+        }
+
+        // Initialize category filter
+        function initializeCategoryFilter() {
+            const categories = ['All', ...new Set(problems.map(p => p.category))];
+            const filterHTML = categories.map(cat => 
+                `<option value="${cat}">${cat}</option>`
+            ).join('');
+            document.getElementById('categoryFilter').innerHTML = filterHTML;
+        }
+
+        // Event listeners
+        document.getElementById('searchInput').addEventListener('input', renderProblems);
+        document.getElementById('categoryFilter').addEventListener('change', renderProblems);
+
+        // Initialize app
+        initializeCategoryFilter();
+        loadProgress();
+    </script>
+</body>
+</html>
